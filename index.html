@@ -1,0 +1,640 @@
+<title>Δύο χρόνια φεγγάρια</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;1,400&family=GFS+Didot&display=swap">
+<style>
+/* Layout: sealed envelope gate → her name as a constellation → live counter → 25 monthly moons → flip-card reasons → typed letter → hold-to-love finale. One night-sky world by choice. */
+:root {
+  color-scheme: dark;
+  --night: #0e1130;
+  --night-2: #1a1e4a;
+  --moon: #f2ead3;
+  --moon-dim: #bdb7a5;
+  --sky: #a0a3cf;
+  --rose: #f2a7ba;
+  --wax: #a8394f;
+  --paper: #ece2c8;
+  --paper-2: #ddd0ae;
+  --line: rgba(242, 234, 211, 0.14);
+  --f-display: "GFS Didot", "Didot", "Bodoni 72", Georgia, serif;
+  --f-letter: "EB Garamond", Garamond, Georgia, serif;
+  --f-body: "Commissioner", "Segoe UI", system-ui, sans-serif;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-io: cubic-bezier(0.77, 0, 0.175, 1);
+}
+* { box-sizing: border-box; }
+html { background: var(--night); }
+body {
+  margin: 0;
+  background: radial-gradient(120% 70% at 50% 0%, var(--night-2), var(--night) 70%) fixed, var(--night);
+  color: var(--moon);
+  font: 300 17px/1.65 var(--f-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  overflow-x: hidden;
+}
+body.locked { overflow: hidden; }
+body.locked main { visibility: hidden; }
+main { transition: opacity 900ms ease; }
+body.locked main { opacity: 0; }
+#sky, #fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+#sky { z-index: 0; }
+#fx { z-index: 50; }
+main { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 120px; padding-block: 40px 120px; }
+section { display: flex; flex-direction: column; gap: 24px; }
+h1, h2 { font-family: var(--f-display); font-weight: 400; text-wrap: balance; margin: 0; line-height: 1.05; }
+h2 { font-size: clamp(2rem, 6vw, 2.8rem); }
+p { margin: 0; }
+.label { font-size: 0.74rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sky); font-weight: 400; }
+.muted { color: var(--sky); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Gate (envelope) ---------- */
+.gate {
+  position: fixed; inset: 0; z-index: 100;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 36px;
+  background: radial-gradient(90% 60% at 50% 40%, rgba(26, 30, 74, 0.7), rgba(14, 17, 48, 0.88));
+  padding: 24px max(16px, env(safe-area-inset-right, 0px)) 24px max(16px, env(safe-area-inset-left, 0px));
+  transition: opacity 700ms ease, visibility 0s linear 700ms;
+}
+.gate.gone { opacity: 0; visibility: hidden; }
+.env { position: relative; width: min(340px, 82vw); aspect-ratio: 3 / 2; perspective: 900px; animation: bob 4s ease-in-out infinite; filter: drop-shadow(0 22px 26px rgba(0, 0, 0, 0.45)); }
+@keyframes bob { 50% { transform: translateY(-6px); } }
+.env .back { position: absolute; inset: 0; background: #c9bb95; border-radius: 6px; }
+.env .card {
+  position: absolute; left: 7%; right: 7%; top: 6%; bottom: 8%;
+  background: var(--moon); border-radius: 3px; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 2px; padding-top: 10%;
+  font: 400 2.4rem/1 var(--f-display); color: var(--wax);
+  transition: transform 900ms var(--ease-out) 650ms;
+}
+.env .card small { font: 400 0.7rem var(--f-body); letter-spacing: 0.2em; color: #8a7f6a; }
+.env .fold { position: absolute; inset: 0; border-radius: 6px; z-index: 2; }
+.env .fold.l { background: #e3d7b8; clip-path: polygon(0 0, 53% 57%, 0 100%); }
+.env .fold.r { background: #e3d7b8; clip-path: polygon(100% 0, 47% 57%, 100% 100%); }
+.env .fold.b { background: linear-gradient(180deg, #f0e8d2, #e8ddc1); clip-path: polygon(0 100%, 50% 47%, 100% 100%); }
+.env .flap {
+  position: absolute; left: 0; right: 0; top: 0; height: 60%;
+  background: linear-gradient(180deg, #d3c49c, #e0d2ad); clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center; z-index: 3;
+  transition: transform 650ms var(--ease-io) 150ms, z-index 0s linear 480ms;
+}
+.seal {
+  position: absolute; left: 50%; top: 60%; z-index: 4;
+  width: 68px; height: 68px; margin: -34px 0 0 -34px; border-radius: 50%; border: 0; cursor: pointer;
+  background: radial-gradient(circle at 35% 30%, #c95068, var(--wax) 60%, #7d2638);
+  color: #f6d9df; font: 400 1.9rem/1 var(--f-display);
+  box-shadow: 0 4px 14px rgba(0,0,0,.35), inset 0 0 0 5px rgba(255,255,255,.07);
+  transition: transform 200ms var(--ease-out), opacity 200ms ease;
+}
+.seal:active { transform: scale(0.94); }
+.seal:focus-visible { outline: 2px solid var(--rose); outline-offset: 5px; }
+.seal::after { content: ""; position: absolute; inset: -10px; border-radius: 50%; border: 1px solid rgba(242,167,186,.5); animation: ring 2.4s var(--ease-out) infinite; }
+@keyframes ring { from { transform: scale(.85); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
+.gate.open .seal { transform: scale(.8); opacity: 0; pointer-events: none; }
+.gate.open .flap { transform: rotateX(180deg); z-index: 0; }
+.gate.open .card { transform: translateY(-58%); }
+.gate.open .env { animation: none; }
+.gate-text { text-align: center; display: flex; flex-direction: column; gap: 8px; transition: opacity 300ms ease; }
+.gate-text h1 { font-size: clamp(2.2rem, 8vw, 3rem); }
+.gate.open .gate-text { opacity: 0; }
+
+/* ---------- Hero ---------- */
+.hero { align-items: center; text-align: center; gap: 18px; }
+#name { width: 100%; height: clamp(170px, 42vw, 300px); display: block; cursor: crosshair; touch-action: pan-y; }
+.pet { position: relative; height: 2.4em; width: 100%; font: italic 400 clamp(1.6rem, 6vw, 2.2rem)/1.2 var(--f-letter); color: var(--rose); }
+.pet span { position: absolute; inset: 0; transition: opacity 700ms ease, filter 700ms ease, transform 700ms var(--ease-out); }
+.pet span.off { opacity: 0; filter: blur(6px); transform: translateY(8px); }
+.hero .wish { font-family: var(--f-display); font-size: clamp(1.4rem, 5vw, 1.8rem); }
+.dates { font-family: var(--f-letter); font-style: italic; font-size: 1.2rem; color: var(--moon-dim); }
+.hint { font-size: 0.82rem; color: var(--sky); }
+
+/* ---------- Counter ---------- */
+.counter { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.counter div { background: var(--night); padding: 20px 8px 16px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.counter b { font: 400 clamp(1.8rem, 7vw, 2.8rem)/1 var(--f-display); font-variant-numeric: tabular-nums; }
+.counter span { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sky); }
+.facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 28px; font-size: 0.95rem; color: var(--moon-dim); }
+.facts strong { color: var(--moon); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+/* ---------- Moons ---------- */
+.moons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px 8px; }
+.moon-btn { appearance: none; background: none; border: 0; color: inherit; font: inherit; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 0; border-radius: 6px; position: relative; transition: opacity 500ms ease, transform 500ms var(--ease-out); }
+.moons.pre .moon-btn { opacity: 0; transform: translateY(14px) scale(.94); }
+.moon-btn canvas { width: 44px; height: 44px; transition: transform 200ms var(--ease-out), filter 200ms ease; }
+@media (hover: hover) and (pointer: fine) { .moon-btn:hover canvas { transform: scale(1.12); } }
+.moon-btn:active canvas { transform: scale(0.94); }
+.moon-btn small { font-size: 0.72rem; color: var(--sky); letter-spacing: 0.04em; }
+.moon-btn[aria-pressed="true"] small { color: var(--rose); }
+.moon-btn[aria-pressed="true"] canvas { filter: drop-shadow(0 0 10px rgba(242, 167, 186, .6)); }
+.moon-btn.has-memory::after { content: ""; position: absolute; top: 4px; right: calc(50% - 30px); width: 6px; height: 6px; border-radius: 50%; background: var(--rose); }
+.moon-btn:focus-visible { outline: 2px solid var(--rose); outline-offset: 2px; }
+.memory { border-top: 1px solid var(--line); padding-top: 20px; display: flex; flex-direction: column; gap: 8px; min-height: 10em; transition: opacity 250ms ease, filter 250ms ease; }
+.memory.swap { opacity: 0; filter: blur(3px); }
+.memory h3 { margin: 0; font: 400 1.6rem/1.2 var(--f-display); }
+.memory .text { font-family: var(--f-letter); font-size: 1.3rem; line-height: 1.45; }
+.memory .astro { font-size: 0.88rem; color: var(--sky); }
+
+/* ---------- Reasons (flip card) ---------- */
+.deck { perspective: 1200px; }
+.flip { position: relative; height: clamp(220px, 50vw, 260px); transform-style: preserve-3d; transition: transform 800ms var(--ease-io); cursor: pointer; }
+.face {
+  position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
+  padding: 28px clamp(20px, 5vw, 36px); border-radius: 6px;
+  background: var(--paper); color: #2a2440;
+  box-shadow: 0 18px 40px rgba(0,0,0,.35);
+}
+.face.back { transform: rotateY(180deg); background: var(--moon); }
+.face .n { font: 400 0.78rem var(--f-body); letter-spacing: .16em; text-transform: uppercase; color: var(--wax); font-variant-numeric: tabular-nums; }
+.face p { font: italic 400 clamp(1.45rem, 5vw, 1.9rem)/1.35 var(--f-letter); text-wrap: balance; }
+.face .tap { font: 400 0.8rem var(--f-body); color: #6b6580; align-self: flex-end; }
+.flip:focus-visible { outline: 2px solid var(--rose); outline-offset: 6px; border-radius: 6px; }
+
+/* ---------- Letter ---------- */
+.letter { font-family: var(--f-letter); font-size: 1.28rem; line-height: 1.7; display: flex; flex-direction: column; gap: 1em; max-width: 34em; }
+.letter .to { font-style: italic; font-size: 1.5rem; }
+.letter .sign { font-style: italic; text-align: right; font-size: 1.45rem; color: var(--rose); }
+.letter .ch { opacity: 0; transition: opacity 180ms ease; }
+.letter .ch.on { opacity: 1; }
+.letter.done .ch { opacity: 1; }
+.skip { align-self: flex-start; appearance: none; background: none; border: 0; color: var(--sky); font: 400 0.85rem var(--f-body); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; padding: 4px 0; }
+.skip:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; }
+
+/* ---------- Finale ---------- */
+.close { align-items: center; text-align: center; gap: 22px; }
+.close h2 { font-size: clamp(3rem, 12vw, 5rem); }
+.hold {
+  position: relative; overflow: hidden; appearance: none; border: 0; border-radius: 999px; cursor: pointer;
+  background: var(--moon); color: var(--night); font: 500 1rem var(--f-body); padding: 16px 32px;
+  user-select: none; -webkit-user-select: none; touch-action: none;
+  transition: transform 160ms var(--ease-out);
+}
+.hold:active { transform: scale(0.97); }
+.hold:focus-visible { outline: 2px solid var(--rose); outline-offset: 4px; }
+.hold .fill { position: absolute; inset: 0; background: var(--rose); clip-path: inset(0 100% 0 0); transition: clip-path 220ms var(--ease-out); }
+.hold.pressing .fill { clip-path: inset(0 0 0 0); transition: clip-path 1.6s linear; }
+.hold .txt { position: relative; }
+.answer { font: italic 400 clamp(1.3rem, 4.5vw, 1.6rem)/1.4 var(--f-letter); color: var(--rose); max-width: 26em; min-height: 2.8em; transition: opacity 600ms ease, transform 600ms var(--ease-out); }
+.answer.hide { opacity: 0; transform: translateY(8px); }
+
+@media (max-width: 420px) {
+  .moons { gap: 12px 2px; }
+  .moon-btn canvas { width: 38px; height: 38px; }
+  .counter div { padding: 16px 4px 12px; }
+  .counter span { letter-spacing: .06em; font-size: .62rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .env, .seal::after { animation: none; }
+  .pet span, .moon-btn, .flip, .env .card, .env .flap, .answer { transition-duration: 1ms !important; transition-delay: 0s !important; }
+  .moons.pre .moon-btn { opacity: 1; transform: none; }
+}
+</style>
+
+<canvas id="sky" aria-hidden="true"></canvas>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<div class="gate" id="gate">
+  <div class="env">
+    <div class="back" aria-hidden="true"></div>
+    <div class="card" aria-hidden="true">Εύη<small>25 · 11</small></div>
+    <div class="fold l" aria-hidden="true"></div>
+    <div class="fold r" aria-hidden="true"></div>
+    <div class="fold b" aria-hidden="true"></div>
+    <div class="flap" aria-hidden="true"></div>
+    <button class="seal" id="seal" type="button" aria-label="Άνοιξε τον φάκελο">Ε</button>
+  </div>
+  <div class="gate-text">
+    <h1>Για την Εύη</h1>
+    <p class="label">Πάτα τη σφραγίδα</p>
+  </div>
+</div>
+
+<main>
+  <section class="hero">
+    <canvas id="name" role="img" aria-label="Το όνομα Εύη γραμμένο με αστέρια"></canvas>
+    <div class="pet" aria-live="off"><span>μωρό μου</span><span class="off">αγάπη μου</span><span class="off">Εύη μου</span></div>
+    <p class="wish">Χρόνια μας πολλά</p>
+    <p class="dates" id="dates"></p>
+    <p class="hint">Άγγιξε τα αστέρια</p>
+  </section>
+
+  <section>
+    <p class="label">Μαζί εδώ και</p>
+    <div class="counter">
+      <div><b id="cDays">0</b><span>μέρες</span></div>
+      <div><b id="cHours">0</b><span>ώρες</span></div>
+      <div><b id="cMins">0</b><span>λεπτά</span></div>
+      <div><b id="cSecs">0</b><span>δευτερόλ.</span></div>
+    </div>
+    <p class="facts">
+      <span><strong id="fMoons">0</strong> πανσέληνοι</span>
+      <span><strong id="fWeeks">0</strong> εβδομάδες</span>
+      <span><strong id="fBeats">0</strong> χτύποι καρδιάς*</span>
+    </p>
+  </section>
+
+  <section>
+    <h2>Κάθε μήνας μας, ένα φεγγάρι</h2>
+    <p class="muted">Έτσι ήταν το φεγγάρι στις 25 κάθε μήνα από τότε που ξεκινήσαμε. Πάτα ένα.</p>
+    <div class="moons pre" id="moons"></div>
+    <div class="memory" id="memory" aria-live="polite"></div>
+  </section>
+
+  <section>
+    <h2>Γιατί εσύ</h2>
+    <div class="deck">
+      <div class="flip" id="flip" tabindex="0" role="button" aria-label="Γύρνα την κάρτα για τον επόμενο λόγο">
+        <div class="face front"><span class="n"></span><p></p><span class="tap">Πάτα για τον επόμενο</span></div>
+        <div class="face back"><span class="n"></span><p></p><span class="tap">Πάτα για τον επόμενο</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Ένα γράμμα</h2>
+    <div class="letter" id="letter"></div>
+    <button class="skip" id="skip" type="button">Δείξε όλο το γράμμα</button>
+  </section>
+
+  <section class="close">
+    <h2>Σ' αγαπώ</h2>
+    <p class="dates">Για όλα τα επόμενα φεγγάρια.</p>
+    <button class="hold" id="hold" type="button"><span class="fill"></span><span class="txt" id="holdTxt">Κράτα πατημένο αν μ' αγαπάς</span></button>
+    <p class="answer hide" id="answer">Το ήξερα. Σ' αγαπώ πιο πολύ, μωρό μου.</p>
+    <p class="hint">* με 72 χτύπους το λεπτό, κατά προσέγγιση</p>
+  </section>
+</main>
+
+<script>
+/* ============ ΑΛΛΑΞΕ ΕΔΩ ============ */
+const CONFIG = {
+  herName: "Εύη",
+  petNames: ["μωρό μου", "αγάπη μου", "Εύη μου"],
+  fromName: "Γιάννης",
+  start: "2024-11-25T00:00:00",
+  // Αναμνήσεις ανά μήνα: "ΕΕΕΕ-ΜΜ": "κείμενο". Οι μήνες χωρίς ανάμνηση δείχνουν απλώς το φεγγάρι.
+  memories: {
+    "2024-11": "Εδώ ξεκινήσαμε. Το πρώτο μας φεγγάρι.",
+    "2025-11": "Ο πρώτος μας χρόνος. Και ήθελα κι άλλους.",
+    "2026-11": "Σήμερα. Δύο χρόνια, και συνεχίζουμε να μετράμε."
+  },
+  reasons: [
+    "Το γέλιο σου, που κάνει κάθε δωμάτιο πιο φωτεινό.",
+    "Το ότι με καταλαβαίνεις πριν καν μιλήσω.",
+    "Το πώς με κοιτάς όταν νομίζεις ότι δεν το βλέπω.",
+    "Η καλοσύνη σου, ακόμα και όταν δεν σε βλέπει κανείς.",
+    "Το ότι μαζί σου ακόμα και το τίποτα είναι ωραίο.",
+    "Οι αγκαλιές σου. Είναι το αγαπημένο μου μέρος.",
+    "Το πείσμα σου. Ναι, κι αυτό.",
+    "Το ότι με στηρίζεις σε ό,τι κι αν κάνω.",
+    "Το πώς λες το όνομά μου.",
+    "Το ότι ονειρευόμαστε τα ίδια πράγματα.",
+    "Το ότι με κάνεις να θέλω να γίνομαι καλύτερος.",
+    "Απλώς επειδή είσαι εσύ, μωρό μου."
+  ],
+  letter: [
+    "Πριν από δύο χρόνια, στις 25 Νοεμβρίου, ξεκίνησε κάτι που δεν ήξερα πόσο θα άλλαζε τις μέρες μου.",
+    "Από τότε μετράω τον χρόνο αλλιώς. Τον μετράω σε στιγμές μαζί σου: στα γέλια που δεν σταματάνε, στις κουβέντες μέχρι αργά, στην ησυχία που νιώθω όταν είσαι δίπλα μου.",
+    "Σ' ευχαριστώ για την υπομονή, για τη ζεστασιά σου, και που με κάνεις καλύτερο άνθρωπο χωρίς να μου το ζητάς ποτέ.",
+    "Αυτή η σελίδα είναι μικρή μπροστά σε όσα νιώθω, αλλά την έφτιαξα γραμμή γραμμή για σένα.",
+    "Χρόνια μας πολλά, αγάπη μου."
+  ]
+};
+/* ==================================== */
+
+const $ = id => document.getElementById(id);
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
+const start = new Date(CONFIG.start);
+const anniv = new Date(start); anniv.setFullYear(start.getFullYear() + 2);
+const rand = (a, b) => a + Math.random() * (b - a);
+
+/* ---------- Moon math (mean synodic month; reference new moon 6 Jan 2000 18:14 UTC) ---------- */
+const SYN = 29.530588853, REF = Date.UTC(2000, 0, 6, 18, 14);
+const phaseAt = d => { const x = ((d - REF) / 864e5) / SYN; return x - Math.floor(x); };
+const illum = p => (1 - Math.cos(2 * Math.PI * p)) / 2;
+function drawMoon(ctx, cx, cy, r, p) {
+  const lit = "#f2ead3", dark = "#2a2e60";
+  ctx.fillStyle = dark; ctx.beginPath(); ctx.arc(cx, cy, r, 0, 6.2832); ctx.fill();
+  ctx.fillStyle = lit; ctx.beginPath(); ctx.arc(cx, cy, r, -Math.PI / 2, Math.PI / 2, p >= 0.5); ctx.closePath(); ctx.fill();
+  const k = Math.cos(2 * Math.PI * p);
+  ctx.fillStyle = k > 0 ? dark : lit;
+  ctx.beginPath(); ctx.ellipse(cx, cy, Math.max(r * Math.abs(k), 0.01), r, 0, 0, 6.2832); ctx.fill();
+}
+
+/* ---------- Sky: twinkling stars + shooting stars ---------- */
+const sky = $("sky"), sctx = sky.getContext("2d");
+let stars = [], shooters = [];
+const vw = () => innerWidth || document.documentElement.clientWidth || 400;
+const vh = () => innerHeight || document.documentElement.clientHeight || 800;
+function sizeSky() {
+  sky.width = Math.round(vw() * DPR); sky.height = Math.round(vh() * DPR);
+  stars = Array.from({ length: Math.round(vw() * vh() / 4000) }, () => ({
+    x: Math.random() * sky.width, y: Math.random() * sky.height,
+    r: rand(0.3, 1.4) * DPR, t: rand(0, 6.28), s: rand(0.4, 1.6)
+  }));
+}
+function shoot(x, y) {
+  const w = sky.width;
+  shooters.push({ x: x ?? rand(w * 0.2, w), y: y ?? rand(0, sky.height * 0.4), vx: -rand(9, 14) * DPR, vy: rand(4, 7) * DPR, life: 1 });
+}
+function drawSky(time) {
+  if (sky.width !== Math.round(vw() * DPR) || sky.height !== Math.round(vh() * DPR) || !stars.length) sizeSky();
+  sctx.clearRect(0, 0, sky.width, sky.height);
+  for (const st of stars) {
+    const a = reduce ? 0.7 : 0.35 + 0.65 * Math.abs(Math.sin(st.t + time * 0.0006 * st.s));
+    sctx.fillStyle = `rgba(242,234,211,${a.toFixed(3)})`;
+    sctx.beginPath(); sctx.arc(st.x, st.y, st.r, 0, 6.2832); sctx.fill();
+  }
+  for (const s of shooters) {
+    s.x += s.vx; s.y += s.vy; s.life -= 0.012;
+    const g = sctx.createLinearGradient(s.x, s.y, s.x - s.vx * 12, s.y - s.vy * 12);
+    g.addColorStop(0, `rgba(255,248,230,${Math.max(s.life, 0)})`); g.addColorStop(1, "rgba(255,248,230,0)");
+    sctx.strokeStyle = g; sctx.lineWidth = 1.6 * DPR; sctx.lineCap = "round";
+    sctx.beginPath(); sctx.moveTo(s.x, s.y); sctx.lineTo(s.x - s.vx * 12, s.y - s.vy * 12); sctx.stroke();
+  }
+  shooters = shooters.filter(s => s.life > 0);
+}
+addEventListener("resize", () => { sizeSky(); if (reduce) drawSky(0); });
+if ("ResizeObserver" in window) new ResizeObserver(() => { sizeSky(); if (reduce) drawSky(0); }).observe(document.documentElement);
+sizeSky();
+if (reduce) drawSky(0);
+else {
+  (function loop(t) { drawSky(t); requestAnimationFrame(loop); })(0);
+  (function schedule() { setTimeout(() => { if (!document.hidden) shoot(); schedule(); }, rand(5000, 11000)); })();
+}
+
+/* ---------- FX canvas: heart bursts ---------- */
+const fx = $("fx"), fctx = fx.getContext("2d");
+let hearts = [], fxRunning = false;
+function sizeFx() { fx.width = Math.round(vw() * DPR); fx.height = Math.round(vh() * DPR); }
+addEventListener("resize", sizeFx); sizeFx();
+function heartPath(ctx, s) {
+  ctx.beginPath();
+  ctx.moveTo(0, s * 0.3);
+  ctx.bezierCurveTo(-s * 0.1, s * 0.05, -s * 0.6, s * 0.05, -s * 0.5, -s * 0.3);
+  ctx.bezierCurveTo(-s * 0.4, -s * 0.6, 0, -s * 0.5, 0, -s * 0.25);
+  ctx.bezierCurveTo(0, -s * 0.5, s * 0.4, -s * 0.6, s * 0.5, -s * 0.3);
+  ctx.bezierCurveTo(s * 0.6, s * 0.05, s * 0.1, s * 0.05, 0, s * 0.3);
+  ctx.closePath();
+}
+function burst(cx, cy, n = 70) {
+  if (fx.width !== Math.round(vw() * DPR) || fx.height !== Math.round(vh() * DPR)) sizeFx();
+  const cols = ["#f2a7ba", "#f2ead3", "#e07a93", "#ffd6e0"];
+  for (let i = 0; i < n; i++) {
+    const a = rand(0, Math.PI * 2), v = rand(4, 13) * DPR;
+    hearts.push({ x: cx * DPR, y: cy * DPR, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 5 * DPR, s: rand(10, 24) * DPR, r: rand(-1, 1), vr: rand(-0.08, 0.08), life: 1, c: cols[i % cols.length] });
+  }
+  if (!fxRunning) { fxRunning = true; requestAnimationFrame(fxLoop); }
+}
+function fxLoop() {
+  fctx.clearRect(0, 0, fx.width, fx.height);
+  for (const h of hearts) {
+    h.vx *= 0.985; h.vy = h.vy * 0.985 + 0.22 * DPR; h.x += h.vx; h.y += h.vy; h.r += h.vr; h.life -= 0.009;
+    fctx.save(); fctx.globalAlpha = Math.max(h.life, 0); fctx.translate(h.x, h.y); fctx.rotate(h.r);
+    fctx.fillStyle = h.c; heartPath(fctx, h.s); fctx.fill(); fctx.restore();
+  }
+  hearts = hearts.filter(h => h.life > 0 && h.y < fx.height + 60);
+  if (hearts.length) requestAnimationFrame(fxLoop); else { fxRunning = false; fctx.clearRect(0, 0, fx.width, fx.height); }
+}
+
+/* ---------- Her name as a constellation ---------- */
+const nameC = $("name"), nctx = nameC.getContext("2d");
+let dots = [], pointer = { x: -9999, y: -9999 }, nameRunning = false;
+async function buildName(fromScatter) {
+  const w = nameC.clientWidth * DPR, h = nameC.clientHeight * DPR;
+  nameC.width = w; nameC.height = h;
+  try { await document.fonts.load(`400 100px "GFS Didot"`, CONFIG.herName); } catch (e) {}
+  const off = document.createElement("canvas"); off.width = w; off.height = h;
+  const o = off.getContext("2d");
+  let size = h * 0.92;
+  o.font = `400 ${size}px "GFS Didot", Georgia, serif`;
+  const tw = o.measureText(CONFIG.herName).width;
+  if (tw > w * 0.9) { size *= (w * 0.9) / tw; o.font = `400 ${size}px "GFS Didot", Georgia, serif`; }
+  o.fillStyle = "#fff"; o.textAlign = "center"; o.textBaseline = "middle";
+  o.fillText(CONFIG.herName, w / 2, h * 0.54);
+  const data = o.getImageData(0, 0, w, h).data;
+  const step = Math.max(3, Math.round(size / 42));
+  const targets = [];
+  for (let y = 0; y < h; y += step) for (let x = 0; x < w; x += step) if (data[(y * w + x) * 4 + 3] > 128) targets.push([x, y]);
+  dots = targets.map(([tx, ty]) => ({
+    tx, ty,
+    x: reduce || !fromScatter ? tx : rand(0, w), y: reduce || !fromScatter ? ty : rand(-h, h * 2),
+    vx: 0, vy: 0, r: rand(0.7, 1.6) * DPR * (size / 200 + 0.6),
+    rose: Math.random() < 0.18, tw: rand(0, 6.28)
+  }));
+  drawName(0);
+  if (!reduce && !nameRunning) { nameRunning = true; requestAnimationFrame(nameLoop); }
+}
+function drawName(t) {
+  nctx.clearRect(0, 0, nameC.width, nameC.height);
+  const R = 70 * DPR;
+  for (const d of dots) {
+    if (!reduce) {
+      const dx = d.x - pointer.x, dy = d.y - pointer.y, dist = Math.hypot(dx, dy);
+      if (dist < R) { const f = (1 - dist / R) * 3.2; d.vx += (dx / (dist || 1)) * f; d.vy += (dy / (dist || 1)) * f; }
+      d.vx += (d.tx - d.x) * 0.018; d.vy += (d.ty - d.y) * 0.018;
+      d.vx *= 0.86; d.vy *= 0.86; d.x += d.vx; d.y += d.vy;
+    }
+    const a = reduce ? 0.9 : 0.55 + 0.45 * Math.abs(Math.sin(d.tw + t * 0.0012));
+    nctx.fillStyle = d.rose ? `rgba(242,167,186,${a.toFixed(3)})` : `rgba(242,234,211,${a.toFixed(3)})`;
+    nctx.beginPath(); nctx.arc(d.x, d.y, d.r, 0, 6.2832); nctx.fill();
+  }
+}
+function nameLoop(t) { drawName(t); requestAnimationFrame(nameLoop); }
+function setPointer(e) { const r = nameC.getBoundingClientRect(); pointer.x = (e.clientX - r.left) * DPR; pointer.y = (e.clientY - r.top) * DPR; }
+nameC.addEventListener("pointermove", setPointer);
+nameC.addEventListener("pointerdown", e => {
+  setPointer(e);
+  if (!reduce) { for (const d of dots) { d.vx += rand(-14, 14); d.vy += rand(-14, 14); } shoot(e.clientX * DPR + 200 * DPR, Math.max(0, e.clientY * DPR - 200 * DPR)); }
+});
+nameC.addEventListener("pointerleave", () => { pointer.x = pointer.y = -9999; });
+nameC.addEventListener("pointerup", e => { if (e.pointerType !== "mouse") pointer.x = pointer.y = -9999; });
+let rT; addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(() => buildName(false), 200); });
+
+/* ---------- Gate ---------- */
+const gate = $("gate");
+document.body.classList.add("locked");
+buildName(false);
+$("seal").addEventListener("click", () => {
+  gate.classList.add("open");
+  setTimeout(() => {
+    gate.classList.add("gone");
+    document.body.classList.remove("locked");
+    buildName(true);
+    if (!reduce) setTimeout(() => shoot(sky.width * 0.9, sky.height * 0.05), 900);
+  }, reduce ? 50 : 1700);
+});
+$("seal").focus({ preventScroll: true });
+
+/* ---------- Pet names rotator ---------- */
+const pets = document.querySelectorAll(".pet span");
+CONFIG.petNames.forEach((n, i) => pets[i] && (pets[i].textContent = n));
+let pi = 0;
+setInterval(() => { pets[pi].classList.add("off"); pi = (pi + 1) % pets.length; pets[pi].classList.remove("off"); }, 2800);
+
+/* ---------- Dates & counter ---------- */
+const fmtDay = new Intl.DateTimeFormat("el-GR", { day: "numeric", month: "long", year: "numeric" });
+$("dates").textContent = `${fmtDay.format(start)} — ${fmtDay.format(anniv)}`;
+const nf = new Intl.NumberFormat("el-GR");
+function tick() {
+  const ms = Math.max(0, Date.now() - start), s = Math.floor(ms / 1000);
+  $("cDays").textContent = Math.floor(s / 86400);
+  $("cHours").textContent = Math.floor(s / 3600) % 24;
+  $("cMins").textContent = Math.floor(s / 60) % 60;
+  $("cSecs").textContent = s % 60;
+  $("fWeeks").textContent = Math.floor(s / 604800);
+  $("fBeats").textContent = nf.format(Math.floor(s / 60 * 72));
+}
+tick(); setInterval(tick, 1000);
+(function () {
+  let n = 0, prev = phaseAt(start);
+  for (let t = +start + 216e5; t <= Date.now(); t += 216e5) { const p = phaseAt(t); if (prev < 0.5 && p >= 0.5) n++; prev = p; }
+  $("fMoons").textContent = n;
+})();
+
+/* ---------- 25 monthly moons ---------- */
+const fmtMonth = new Intl.DateTimeFormat("el-GR", { month: "long", year: "numeric" });
+const fmtShort = new Intl.DateTimeFormat("el-GR", { month: "short" });
+const fmtFull = new Intl.DateTimeFormat("el-GR", { day: "numeric", month: "long" });
+const months = [];
+for (let i = 0; i <= 24; i++) {
+  const d = new Date(start.getFullYear(), start.getMonth() + i, 25, 21, 0);
+  const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+  const dim = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+  let best = null, bestDist = 1;
+  for (let day = 1; day <= dim; day++) {
+    const dd = new Date(d.getFullYear(), d.getMonth(), day, 21);
+    const dist = Math.abs(phaseAt(dd) - 0.5);
+    if (dist < bestDist) { bestDist = dist; best = dd; }
+  }
+  months.push({ i, d, key, p: phaseAt(d), full: best, memory: CONFIG.memories[key] });
+}
+function phaseName(p) {
+  if (p < 0.03 || p > 0.97) return "νέα σελήνη";
+  if (p < 0.22) return "αύξων μηνίσκος";
+  if (p < 0.28) return "πρώτο τέταρτο";
+  if (p < 0.47) return "αύξουσα αμφίκυρτη";
+  if (p < 0.53) return "πανσέληνος";
+  if (p < 0.72) return "φθίνουσα αμφίκυρτη";
+  if (p < 0.78) return "τελευταίο τέταρτο";
+  return "φθίνων μηνίσκος";
+}
+const grid = $("moons"), memBox = $("memory");
+function renderMonth(m) {
+  const title = m.i === 0 ? "Ο πρώτος μας μήνας" : m.i === 24 ? "Δύο χρόνια" : `Μήνας ${m.i + 1}`;
+  memBox.innerHTML = "";
+  const h = document.createElement("h3"); h.textContent = `${title} · ${fmtMonth.format(m.d)}`;
+  const t = document.createElement("p"); t.className = "text"; t.textContent = m.memory || "Ακόμα ένας μήνας μαζί σου.";
+  const a = document.createElement("p"); a.className = "astro";
+  a.textContent = `Στις 25 το φεγγάρι ήταν ${phaseName(m.p)}, φωτισμένο κατά ${Math.round(illum(m.p) * 100)}%. Πανσέληνος εκείνον τον μήνα: ${fmtFull.format(m.full)}.`;
+  memBox.append(h, t, a);
+}
+function showMonth(m) {
+  grid.querySelectorAll(".moon-btn").forEach(b => b.setAttribute("aria-pressed", b.dataset.i == m.i ? "true" : "false"));
+  if (reduce) return renderMonth(m);
+  memBox.classList.add("swap");
+  setTimeout(() => { renderMonth(m); memBox.classList.remove("swap"); }, 220);
+}
+months.forEach(m => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "moon-btn" + (m.memory ? " has-memory" : "");
+  b.dataset.i = m.i; b.setAttribute("aria-pressed", "false"); b.setAttribute("aria-label", fmtMonth.format(m.d));
+  b.style.transitionDelay = `${m.i * 45}ms`;
+  const c = document.createElement("canvas"); c.width = c.height = 44 * DPR;
+  drawMoon(c.getContext("2d"), 22 * DPR, 22 * DPR, 18 * DPR, m.p);
+  const lab = document.createElement("small");
+  lab.textContent = `${fmtShort.format(m.d).replace(".", "")} '${String(m.d.getFullYear()).slice(2)}`;
+  b.append(c, lab);
+  b.addEventListener("click", () => showMonth(m));
+  grid.append(b);
+});
+renderMonth(months[24]);
+grid.querySelector('[data-i="24"]').setAttribute("aria-pressed", "true");
+
+/* ---------- Reveal-on-scroll (moons stagger, letter typing) ---------- */
+const io = new IntersectionObserver(entries => {
+  for (const e of entries) {
+    if (!e.isIntersecting) continue;
+    if (e.target === grid) {
+      grid.classList.remove("pre");
+      setTimeout(() => grid.querySelectorAll(".moon-btn").forEach(b => b.style.transitionDelay = "0ms"), 1800);
+    }
+    if (e.target === letterEl) typeLetter();
+    io.unobserve(e.target);
+  }
+}, { threshold: 0.25 });
+if (reduce) grid.classList.remove("pre"); else io.observe(grid);
+
+/* ---------- Reasons: flip card ---------- */
+const flip = $("flip"), faces = flip.querySelectorAll(".face");
+const order = CONFIG.reasons.map((_, i) => i).sort(() => Math.random() - 0.5);
+let ri = 0, angle = 0;
+function fillFace(face, idx) {
+  face.querySelector(".n").textContent = `Λόγος ${idx + 1} από ${order.length}`;
+  face.querySelector("p").textContent = CONFIG.reasons[order[idx]];
+}
+fillFace(faces[0], 0);
+function nextReason() {
+  ri = (ri + 1) % order.length;
+  const hidden = faces[(Math.round(angle / 180) + 1) % 2];
+  fillFace(hidden, ri);
+  angle += 180;
+  flip.style.transform = `rotateY(${angle}deg)`;
+  if (ri === order.length - 1 && !reduce) { const r = flip.getBoundingClientRect(); setTimeout(() => burst(r.left + r.width / 2, r.top + r.height / 2, 30), 500); }
+}
+flip.addEventListener("click", nextReason);
+flip.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); nextReason(); } });
+
+/* ---------- Letter: typed by hand ---------- */
+const letterEl = $("letter"), chars = [];
+function addPara(text, cls) {
+  const p = document.createElement("p"); if (cls) p.className = cls;
+  for (const ch of text) { const s = document.createElement("span"); s.className = "ch"; s.textContent = ch; p.append(s); chars.push(s); }
+  letterEl.append(p);
+}
+addPara(CONFIG.herName + " μου,", "to");
+CONFIG.letter.forEach(t => addPara(t));
+addPara(CONFIG.fromName, "sign");
+let typing = false, typed = false;
+function finishLetter() { typed = true; letterEl.classList.add("done"); $("skip").hidden = true; }
+function typeLetter() {
+  if (typing || typed) return; typing = true;
+  let i = 0;
+  (function step() {
+    if (typed) return;
+    const batch = 2;
+    for (let k = 0; k < batch && i < chars.length; k++, i++) chars[i].classList.add("on");
+    if (i < chars.length) {
+      const prev = chars[i - 1].textContent;
+      setTimeout(step, /[.,:]/.test(prev) ? 260 : 34);
+    } else finishLetter();
+  })();
+}
+$("skip").addEventListener("click", finishLetter);
+if (reduce) finishLetter(); else io.observe(letterEl);
+
+/* ---------- Finale: hold to love ---------- */
+const hold = $("hold"), answer = $("answer");
+let holdTimer = null;
+function pressStart(e) {
+  if (e.type === "keydown" && (e.repeat || (e.key !== " " && e.key !== "Enter"))) return;
+  if (e.type === "keydown") e.preventDefault();
+  hold.classList.add("pressing");
+  holdTimer = setTimeout(() => {
+    const r = hold.getBoundingClientRect();
+    hold.classList.remove("pressing");
+    burst(r.left + r.width / 2, r.top + r.height / 2, reduce ? 0 : 90);
+    answer.classList.remove("hide");
+    $("holdTxt").textContent = "Ξανά";
+    holdTimer = null;
+  }, reduce ? 300 : 1600);
+}
+function pressEnd() { hold.classList.remove("pressing"); if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; } }
+hold.addEventListener("pointerdown", pressStart);
+hold.addEventListener("keydown", pressStart);
+["pointerup", "pointerleave", "pointercancel", "keyup", "blur"].forEach(ev => hold.addEventListener(ev, pressEnd));
+hold.addEventListener("contextmenu", e => e.preventDefault());
+</script>
