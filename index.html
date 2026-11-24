@@ -301,12 +301,6 @@ p { margin: 0; }
     <button class="skip" id="skip" type="button">Δείξε όλο το γράμμα</button>
   </section>
 
-  <section class="close">
-    <h2>Σ' αγαπώ</h2>
-    <p class="dates">Για όλα τα επόμενα φεγγάρια.</p>
-    <button class="hold" id="hold" type="button"><span class="fill"></span><span class="txt" id="holdTxt">Κράτα πατημένο αν μ' αγαπάς</span></button>
-    <p class="answer hide" id="answer">Το ήξερα. Σ' αγαπώ πιο πολύ, μωρό μου.</p>
-  </section>
 </main>
 
 <script>
@@ -336,7 +330,8 @@ const CONFIG = {
   letter: [
     "Σαν σήμερα πριν δύο χρόνια ήταν η πρώτη φορά που ένιωσα τη ζεστασιά, τα φιλιά και το άγγιγμά σου. Από τότε, κάθε μέρα μαζί σου είναι πιο όμορφη από την προηγούμενη, και γίνεσαι ακόμα πιο σημαντική για εμένα.",
     "Ό,τι και να γράψω σε αυτή την κάρτα είναι λίγο μπροστά σε αυτά που νιώθω για εσένα.",
-    "Σε ευχαριστώ που είσαι πάντα δίπλα μου, σε ό,τι και να χρειαστώ. Ανυπομονώ για όλες τις στιγμές που έρχονται, γιατί σε όλες τους θα είμαστε μαζί."
+    "Σε ευχαριστώ που είσαι πάντα δίπλα μου, σε ό,τι και να χρειαστώ. Ανυπομονώ για όλες τις στιγμές που έρχονται, γιατί σε όλες τους θα είμαστε μαζί.",
+    "Σ' αγαπώ, για όλα τα επόμενα φεγγάρια."
   ]
 };
 /* ==================================== */
@@ -698,25 +693,4 @@ function typeLetter() {
 $("skip").addEventListener("click", finishLetter);
 if (reduce) finishLetter(); else io.observe(letterEl);
 
-/* ---------- Finale: hold to love ---------- */
-const hold = $("hold"), answer = $("answer");
-let holdTimer = null;
-function pressStart(e) {
-  if (e.type === "keydown" && (e.repeat || (e.key !== " " && e.key !== "Enter"))) return;
-  if (e.type === "keydown") e.preventDefault();
-  hold.classList.add("pressing");
-  holdTimer = setTimeout(() => {
-    const r = hold.getBoundingClientRect();
-    hold.classList.remove("pressing");
-    burst(r.left + r.width / 2, r.top + r.height / 2, reduce ? 0 : 90);
-    answer.classList.remove("hide");
-    $("holdTxt").textContent = "Ξανά";
-    holdTimer = null;
-  }, reduce ? 300 : 1600);
-}
-function pressEnd() { hold.classList.remove("pressing"); if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; } }
-hold.addEventListener("pointerdown", pressStart);
-hold.addEventListener("keydown", pressStart);
-["pointerup", "pointerleave", "pointercancel", "keyup", "blur"].forEach(ev => hold.addEventListener(ev, pressEnd));
-hold.addEventListener("contextmenu", e => e.preventDefault());
 </script>
