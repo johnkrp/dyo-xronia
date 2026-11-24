@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="el">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
 <title>Δύο χρόνια φεγγάρια</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -106,7 +111,10 @@ p { margin: 0; }
 .pet { position: relative; height: 2.4em; width: 100%; font: italic 400 clamp(1.6rem, 6vw, 2.2rem)/1.2 var(--f-letter); color: var(--rose); }
 .pet span { position: absolute; inset: 0; transition: opacity 700ms ease, filter 700ms ease, transform 700ms var(--ease-out); }
 .pet span.off { opacity: 0; filter: blur(6px); transform: translateY(8px); }
-.hero .wish { font-family: var(--f-display); font-size: clamp(1.4rem, 5vw, 1.8rem); }
+.hero .wish { font-family: var(--f-display); font-size: clamp(1.4rem, 5vw, 1.8rem); display: flex; align-items: center; justify-content: center; gap: 12px; text-wrap: balance; }
+.heart { flex: none; width: 0.8em; height: 0.8em; fill: var(--rose); animation: beat 1.8s ease-in-out infinite; }
+.heart:last-of-type { animation-delay: 0.3s; }
+@keyframes beat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.22); } 28% { transform: scale(1); } 42% { transform: scale(1.14); } 56% { transform: scale(1); } }
 .dates { font-family: var(--f-letter); font-style: italic; font-size: 1.2rem; color: var(--moon-dim); }
 .hint { font-size: 0.82rem; color: var(--sky); }
 
@@ -186,7 +194,7 @@ p { margin: 0; }
   .counter span { letter-spacing: .06em; font-size: .62rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .env, .seal::after { animation: none; }
+  .env, .seal::after, .heart { animation: none; }
   .pet span, .moon-btn, .flip, .env .card, .env .flap, .answer { transition-duration: 1ms !important; transition-delay: 0s !important; }
   .moons.pre .moon-btn { opacity: 1; transform: none; }
 }
@@ -214,10 +222,12 @@ p { margin: 0; }
 <main>
   <section class="hero">
     <canvas id="name" role="img" aria-label="Το όνομα Εύη γραμμένο με αστέρια"></canvas>
-    <div class="pet" aria-live="off"><span>μωρό μου</span><span class="off">αγάπη μου</span><span class="off">Εύη μου</span></div>
-    <p class="wish">Χρόνια μας πολλά</p>
+    <p class="wish">
+      <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      <span>Χρόνια μας πολλά, μωρό μου</span>
+      <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    </p>
     <p class="dates" id="dates"></p>
-    <p class="hint">Άγγιξε τα αστέρια</p>
   </section>
 
   <section>
@@ -231,7 +241,7 @@ p { margin: 0; }
     <p class="facts">
       <span><strong id="fMoons">0</strong> πανσέληνοι</span>
       <span><strong id="fWeeks">0</strong> εβδομάδες</span>
-      <span><strong id="fBeats">0</strong> χτύποι καρδιάς*</span>
+      <span><strong id="fBeats">0</strong> χτύποι καρδιάς</span>
     </p>
   </section>
 
@@ -263,7 +273,6 @@ p { margin: 0; }
     <p class="dates">Για όλα τα επόμενα φεγγάρια.</p>
     <button class="hold" id="hold" type="button"><span class="fill"></span><span class="txt" id="holdTxt">Κράτα πατημένο αν μ' αγαπάς</span></button>
     <p class="answer hide" id="answer">Το ήξερα. Σ' αγαπώ πιο πολύ, μωρό μου.</p>
-    <p class="hint">* με 72 χτύπους το λεπτό, κατά προσέγγιση</p>
   </section>
 </main>
 
@@ -470,10 +479,6 @@ $("seal").addEventListener("click", () => {
 $("seal").focus({ preventScroll: true });
 
 /* ---------- Pet names rotator ---------- */
-const pets = document.querySelectorAll(".pet span");
-CONFIG.petNames.forEach((n, i) => pets[i] && (pets[i].textContent = n));
-let pi = 0;
-setInterval(() => { pets[pi].classList.add("off"); pi = (pi + 1) % pets.length; pets[pi].classList.remove("off"); }, 2800);
 
 /* ---------- Dates & counter ---------- */
 const fmtDay = new Intl.DateTimeFormat("el-GR", { day: "numeric", month: "long", year: "numeric" });
