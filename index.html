@@ -111,7 +111,7 @@ p { margin: 0; }
 .pet { position: relative; height: 2.4em; width: 100%; font: italic 400 clamp(1.6rem, 6vw, 2.2rem)/1.2 var(--f-letter); color: var(--rose); }
 .pet span { position: absolute; inset: 0; transition: opacity 700ms ease, filter 700ms ease, transform 700ms var(--ease-out); }
 .pet span.off { opacity: 0; filter: blur(6px); transform: translateY(8px); }
-.hero .wish { font-family: var(--f-display); font-size: clamp(1.4rem, 5vw, 1.8rem); display: flex; align-items: center; justify-content: center; gap: 12px; text-wrap: balance; }
+.hero .wish { font-family: var(--f-display); font-size: clamp(1rem, 5.2vw, 1.8rem); display: flex; align-items: center; justify-content: center; gap: 0.45em; white-space: nowrap; }
 .heart { flex: none; width: 0.8em; height: 0.8em; fill: var(--rose); animation: beat 1.8s ease-in-out infinite; }
 .heart:last-of-type { animation-delay: 0.3s; }
 @keyframes beat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.22); } 28% { transform: scale(1); } 42% { transform: scale(1.14); } 56% { transform: scale(1); } }
@@ -155,7 +155,9 @@ p { margin: 0; }
   background: var(--paper); color: #2a2440;
   box-shadow: 0 18px 40px rgba(0,0,0,.35);
 }
+.face.front { transform: rotateY(0deg); }
 .face.back { transform: rotateY(180deg); background: var(--moon); }
+.face.off { visibility: hidden; }
 .face .n { font: 400 0.78rem var(--f-body); letter-spacing: .16em; text-transform: uppercase; color: var(--wax); font-variant-numeric: tabular-nums; }
 .face p { font: italic 400 clamp(1.3rem, 4.6vw, 1.75rem)/1.32 var(--f-letter); text-wrap: balance; animation: textIn 700ms var(--ease-out) 420ms both; }
 @keyframes textIn { from { opacity: 0; filter: blur(4px); transform: translateY(6px); } }
@@ -288,7 +290,7 @@ p { margin: 0; }
     <div class="deck">
       <div class="flip" id="flip" tabindex="0" role="button" aria-label="Γύρνα την κάρτα">
         <div class="face front"><p></p></div>
-        <div class="face back"><p></p></div>
+        <div class="face back off"><p></p></div>
       </div>
     </div>
   </section>
@@ -446,12 +448,12 @@ async function buildName(fromScatter) {
   try { await document.fonts.load(`400 100px "GFS Didot"`, CONFIG.herName); } catch (e) {}
   const off = document.createElement("canvas"); off.width = w; off.height = h;
   const o = off.getContext("2d");
-  let size = h * 0.92;
+  let size = h * 0.84;
   o.font = `400 ${size}px "GFS Didot", Georgia, serif`;
   const tw = o.measureText(CONFIG.herName).width;
   if (tw > w * 0.9) { size *= (w * 0.9) / tw; o.font = `400 ${size}px "GFS Didot", Georgia, serif`; }
   o.fillStyle = "#fff"; o.textAlign = "center"; o.textBaseline = "middle";
-  o.fillText(CONFIG.herName, w / 2, h * 0.54);
+  o.fillText(CONFIG.herName, w / 2, h * 0.44);
   const data = o.getImageData(0, 0, w, h).data;
   const step = Math.max(3, Math.round(size / 42));
   const targets = [];
@@ -472,8 +474,8 @@ function drawName(t) {
     if (!reduce) {
       const dx = d.x - pointer.x, dy = d.y - pointer.y, dist = Math.hypot(dx, dy);
       if (dist < R) { const f = (1 - dist / R) * 3.2; d.vx += (dx / (dist || 1)) * f; d.vy += (dy / (dist || 1)) * f; }
-      d.vx += (d.tx - d.x) * 0.018; d.vy += (d.ty - d.y) * 0.018;
-      d.vx *= 0.86; d.vy *= 0.86; d.x += d.vx; d.y += d.vy;
+      d.vx += (d.tx - d.x) * 0.03; d.vy += (d.ty - d.y) * 0.03;
+      d.vx *= 0.84; d.vy *= 0.84; d.x += d.vx; d.y += d.vy;
     }
     const a = reduce ? 0.9 : 0.55 + 0.45 * Math.abs(Math.sin(d.tw + t * 0.0012));
     nctx.fillStyle = d.rose ? `rgba(242,167,186,${a.toFixed(3)})` : `rgba(242,234,211,${a.toFixed(3)})`;
@@ -653,12 +655,18 @@ function fillFace(face, idx) {
   art.innerHTML = `<svg viewBox="0 0 64 64">${ART[k % ART.length]}</svg>`;
 }
 fillFace(faces[0], 0);
+// Safari ignores backface-visibility here, so swap the visible face at the flip's midpoint.
+let swapT = null, pendingSwap = null;
 function nextReason() {
+  if (pendingSwap) { clearTimeout(swapT); pendingSwap(); }
   ri = (ri + 1) % order.length;
-  const hidden = faces[(Math.round(angle / 180) + 1) % 2];
+  const si = Math.round(angle / 180) % 2;
+  const shown = faces[si], hidden = faces[(si + 1) % 2];
   fillFace(hidden, ri);
   angle += 180;
   flip.style.transform = `rotateY(${angle}deg)`;
+  pendingSwap = () => { hidden.classList.remove("off"); shown.classList.add("off"); pendingSwap = null; };
+  swapT = setTimeout(pendingSwap, reduce ? 0 : 400);
   if (ri === order.length - 1 && !reduce) { const r = flip.getBoundingClientRect(); setTimeout(() => burst(r.left + r.width / 2, r.top + r.height / 2, 30), 500); }
 }
 flip.addEventListener("click", nextReason);
