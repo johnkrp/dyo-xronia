@@ -213,10 +213,6 @@ p { margin: 0; }
     <div class="flap" aria-hidden="true"></div>
     <button class="seal" id="seal" type="button" aria-label="Άνοιξε τον φάκελο">Ε</button>
   </div>
-  <div class="gate-text">
-    <h1>Για την Εύη</h1>
-    <p class="label">Πάτα τη σφραγίδα</p>
-  </div>
 </div>
 
 <main>
@@ -529,13 +525,13 @@ function phaseName(p) {
 }
 const grid = $("moons"), memBox = $("memory");
 function renderMonth(m) {
-  const title = m.i === 0 ? "Ο πρώτος μας μήνας" : m.i === 24 ? "Δύο χρόνια" : `Μήνας ${m.i + 1}`;
   memBox.innerHTML = "";
-  const h = document.createElement("h3"); h.textContent = `${title} · ${fmtMonth.format(m.d)}`;
-  const t = document.createElement("p"); t.className = "text"; t.textContent = m.memory || "Ακόμα ένας μήνας μαζί σου.";
+  const h = document.createElement("h3"); h.textContent = fmtMonth.format(m.d);
+  memBox.append(h);
+  if (m.memory) { const t = document.createElement("p"); t.className = "text"; t.textContent = m.memory; memBox.append(t); }
   const a = document.createElement("p"); a.className = "astro";
   a.textContent = `Στις 25 το φεγγάρι ήταν ${phaseName(m.p)}, φωτισμένο κατά ${Math.round(illum(m.p) * 100)}%. Πανσέληνος εκείνον τον μήνα: ${fmtFull.format(m.full)}.`;
-  memBox.append(h, t, a);
+  memBox.append(a);
 }
 function showMonth(m) {
   grid.querySelectorAll(".moon-btn").forEach(b => b.setAttribute("aria-pressed", b.dataset.i == m.i ? "true" : "false"));
