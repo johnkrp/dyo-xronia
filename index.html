@@ -149,7 +149,7 @@ p { margin: 0; }
 .flip { position: relative; height: clamp(220px, 50vw, 260px); transform-style: preserve-3d; transition: transform 800ms var(--ease-io); cursor: pointer; }
 .face {
   position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
-  display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
+  display: flex; flex-direction: column; justify-content: center; gap: 12px;
   padding: 28px clamp(20px, 5vw, 36px); border-radius: 6px;
   background: var(--paper); color: #2a2440;
   box-shadow: 0 18px 40px rgba(0,0,0,.35);
@@ -249,11 +249,11 @@ p { margin: 0; }
   </section>
 
   <section>
-    <h2>Γιατί εσύ</h2>
+    <h2>Σ' αγαπώ…</h2>
     <div class="deck">
-      <div class="flip" id="flip" tabindex="0" role="button" aria-label="Γύρνα την κάρτα για τον επόμενο λόγο">
-        <div class="face front"><span class="n"></span><p></p><span class="tap">Πάτα για τον επόμενο</span></div>
-        <div class="face back"><span class="n"></span><p></p><span class="tap">Πάτα για τον επόμενο</span></div>
+      <div class="flip" id="flip" tabindex="0" role="button" aria-label="Γύρνα την κάρτα">
+        <div class="face front"><p></p></div>
+        <div class="face back"><p></p></div>
       </div>
     </div>
   </section>
@@ -574,7 +574,6 @@ const flip = $("flip"), faces = flip.querySelectorAll(".face");
 const order = CONFIG.reasons.map((_, i) => i).sort(() => Math.random() - 0.5);
 let ri = 0, angle = 0;
 function fillFace(face, idx) {
-  face.querySelector(".n").textContent = `Λόγος ${idx + 1} από ${order.length}`;
   face.querySelector("p").textContent = CONFIG.reasons[order[idx]];
 }
 fillFace(faces[0], 0);
